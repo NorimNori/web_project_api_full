@@ -1,0 +1,31 @@
+{
+  "name": "web_project_around_express",
+  "version": "1.0.0",
+  "description": "TripleTen project for Sprint 16: Introduction to back end.",
+  "homepage": "https://github.com/NorimNori/web_project_around_express#readme",
+  "bugs": {
+    "url": "https://github.com/NorimNori/web_project_around_express/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NorimNori/web_project_around_express.git"
+  },
+  "license": "ISC",
+  "author": "Gloria Rangel",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "npx eslint .",
+    "dev": "nodemon index.js"
+  },
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "express": "^5.2.1",
+    "nodemon": "^3.1.11"
+  },
+  "dependencies": {
+    "eslint-config-airbnb-base": "^15.0.0",
+    "mongoose": "^8.23.0"
+  }
+}
