@@ -152,6 +152,13 @@ const signin = (req, res) => {
       });
     });
 };
+const getCurrentUser = (req, res) => {
+  const { _id } = req.user;
+
+  User.findById(_id)
+    .then((user) => res.send(user))
+    .catch(() => res.status(500).send({ message: "Error del servidor" }));
+};
 
 module.exports = {
   getAllUsers,
@@ -160,4 +167,5 @@ module.exports = {
   updateUser,
   updateAvatar,
   signin,
+  getCurrentUser,
 };
