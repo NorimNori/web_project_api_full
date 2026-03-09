@@ -121,7 +121,7 @@ const updateAvatar = (req, res) => {
     });
 };
 
-const login = (req, res) => {
+const signin = (req, res) => {
   const { email, password } = req.body;
 
   User.findOne({ email })
@@ -159,5 +159,5 @@ module.exports = {
   createUser,
   updateUser,
   updateAvatar,
-  login,
+  signin,
 };
