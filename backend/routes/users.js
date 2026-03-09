@@ -6,6 +6,7 @@ const {
   createUser,
   updateUser,
   updateAvatar,
+  login,
 } = require("../controllers/users");
 
 const router = express.Router();
@@ -19,5 +20,7 @@ router.post("/", createUser);
 router.patch("/me", updateUser);
 
 router.patch("/me/avatar", updateAvatar);
+
+router.post("/login", login);
 
 module.exports = router;
