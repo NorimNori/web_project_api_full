@@ -9,14 +9,6 @@ const app = express();
 
 app.use(express.json());
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: "6990fa2d35969610fb8d3ba4",
-  };
-
-  next();
-});
-
 mongoose.connect("mongodb://localhost:27017/aroundb");
 
 app.post("/signin", signin);
