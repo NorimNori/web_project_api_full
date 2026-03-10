@@ -131,6 +131,7 @@ const signin = (req, res) => {
   const { email, password } = req.body;
 
   return User.findOne({ email })
+    .select("+password")
     .then((user) => {
       if (!user) {
         return res.status(401).json({
@@ -152,11 +153,11 @@ const signin = (req, res) => {
         return res.json({ token });
       });
     })
-    .catch(() =>
+    .catch(() => {
       res.status(500).json({
         message: "Error interno del servidor",
-      }),
-    );
+      });
+    });
 };
 
 const getCurrentUser = (req, res) => {
