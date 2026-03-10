@@ -65,6 +65,12 @@ const createUser = (req, res) => {
         });
       }
 
+      if (err.code === 11000) {
+        return res.status(409).json({
+          message: "El correo ya está registrado",
+        });
+      }
+
       res.status(500).json({
         message: "Error interno del servidor",
       });
@@ -124,7 +130,7 @@ const updateAvatar = (req, res) => {
 const signin = (req, res) => {
   const { email, password } = req.body;
 
-  User.findOne({ email })
+  return User.findOne({ email })
     .then((user) => {
       if (!user) {
         return res.status(401).json({
@@ -146,18 +152,30 @@ const signin = (req, res) => {
         return res.json({ token });
       });
     })
-    .catch(() => {
+    .catch(() =>
       res.status(500).json({
         message: "Error interno del servidor",
-      });
-    });
+      }),
+    );
 };
+
 const getCurrentUser = (req, res) => {
   const { _id } = req.user;
 
   User.findById(_id)
-    .then((user) => res.send(user))
-    .catch(() => res.status(500).send({ message: "Error del servidor" }));
+    .orFail()
+    .then((user) => res.status(200).json(user))
+    .catch((err) => {
+      if (err.name === "DocumentNotFoundError") {
+        return res.status(404).json({
+          message: "Usuario no encontrado",
+        });
+      }
+
+      res.status(500).json({
+        message: "Error interno del servidor",
+      });
+    });
 };
 
 module.exports = {

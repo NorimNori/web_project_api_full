@@ -36,11 +36,19 @@ const createCard = (req, res) => {
 const deleteCard = (req, res) => {
   const { id } = req.params;
 
-  Card.findByIdAndDelete(id)
+  return Card.findById(id)
     .orFail()
-    .then(() => {
-      res.status(200).json({
-        message: "Tarjeta eliminada correctamente",
+    .then((card) => {
+      if (card.owner.toString() !== req.user._id) {
+        return res.status(403).json({
+          message: "No tienes permiso para eliminar esta tarjeta",
+        });
+      }
+
+      return card.deleteOne().then(() => {
+        res.status(200).json({
+          message: "Tarjeta eliminada correctamente",
+        });
       });
     })
     .catch((err) => {
@@ -56,7 +64,7 @@ const deleteCard = (req, res) => {
         });
       }
 
-      res.status(500).json({
+      return res.status(500).json({
         message: "Error interno del servidor",
       });
     });
