@@ -2,7 +2,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/users");
 
-const JWT_SECRET = "9N8W+68UMc'K<";
+const JWT_SECRET = "d9N8W+68UMc'K<";
 
 const getAllUsers = (req, res, next) => {
   User.find({})
