@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema({
     default:
       "https://practicum-content.s3.us-west-1.amazonaws.com/resources/moved_avatar_1604080799.jpg",
     validate: {
-      validator: function (value) {
+      validator(value) {
         return urlRegex.test(value);
       },
       message: "La URL del avatar no es válido",

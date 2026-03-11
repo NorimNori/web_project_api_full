@@ -13,7 +13,7 @@ const cardSchema = new mongoose.Schema({
     type: String,
     required: true,
     validate: {
-      validator: function (value) {
+      validator(value) {
         return urlRegex.test(value);
       },
       message: "El enlace de la imagen no es válido",
