@@ -18,6 +18,7 @@ app.use(auth);
 
 const cardsRouter = require("./routes/cards");
 const usersRouter = require("./routes/users");
+const errorHandler = require("./middlewares/errorHandler");
 
 app.use("/cards", cardsRouter);
 app.use("/users", usersRouter);
@@ -27,6 +28,8 @@ app.use((req, res) => {
     message: "Recurso solicitado no encontrado",
   });
 });
+
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`App listening at port ${PORT}`);

@@ -4,17 +4,15 @@ const User = require("../models/users");
 
 const JWT_SECRET = "9N8W+68UMc'K<";
 
-const getAllUsers = (req, res) => {
+const getAllUsers = (req, res, next) => {
   User.find({})
     .then((users) => {
       res.status(200).json(users);
     })
-    .catch((err) => {
-      res.status(500).json({ message: "Error interno del servidor" });
-    });
+    .catch(next);
 };
 
-const getUser = (req, res) => {
+const getUser = (req, res, next) => {
   const { id } = req.params;
 
   User.findById(id)
@@ -24,24 +22,20 @@ const getUser = (req, res) => {
     })
     .catch((err) => {
       if (err.name === "DocumentNotFoundError") {
-        return res.status(404).json({
-          message: "Usuario no encontrado",
-        });
+        err.statusCode = 404;
+        err.message = "Usuario no encontrado";
       }
 
       if (err.name === "CastError") {
-        return res.status(400).json({
-          message: "ID inválido",
-        });
+        err.statusCode = 400;
+        err.message = "ID inválido";
       }
 
-      res.status(500).json({
-        message: "Error interno del servidor",
-      });
+      next(err);
     });
 };
 
-const createUser = (req, res) => {
+const createUser = (req, res, next) => {
   const { name, about, avatar, email, password } = req.body;
 
   bcrypt
@@ -60,24 +54,20 @@ const createUser = (req, res) => {
     })
     .catch((err) => {
       if (err.name === "ValidationError") {
-        return res.status(400).json({
-          message: "Datos inválidos",
-        });
+        err.statusCode = 400;
+        err.message = "Datos inválidos";
       }
 
       if (err.code === 11000) {
-        return res.status(409).json({
-          message: "El correo ya está registrado",
-        });
+        err.statusCode = 409;
+        err.message = "El correo ya está registrado";
       }
 
-      res.status(500).json({
-        message: "Error interno del servidor",
-      });
+      next(err);
     });
 };
 
-const updateUser = (req, res) => {
+const updateUser = (req, res, next) => {
   const { name, about } = req.body;
 
   User.findByIdAndUpdate(
@@ -91,18 +81,20 @@ const updateUser = (req, res) => {
     })
     .catch((err) => {
       if (err.name === "ValidationError") {
-        return res.status(400).json({ message: "Datos inválidos" });
+        err.statusCode = 400;
+        err.message = "Datos inválidos";
       }
 
       if (err.name === "DocumentNotFoundError") {
-        return res.status(404).json({ message: "Usuario no encontrado" });
+        err.statusCode = 404;
+        err.message = "Usuario no encontrado";
       }
 
-      res.status(500).json({ message: "Error interno del servidor" });
+      next(err);
     });
 };
 
-const updateAvatar = (req, res) => {
+const updateAvatar = (req, res, next) => {
   const { avatar } = req.body;
 
   User.findByIdAndUpdate(
@@ -116,66 +108,63 @@ const updateAvatar = (req, res) => {
     })
     .catch((err) => {
       if (err.name === "ValidationError") {
-        return res.status(400).json({ message: "Datos inválidos" });
+        err.statusCode = 400;
+        err.message = "Datos inválidos";
       }
 
       if (err.name === "DocumentNotFoundError") {
-        return res.status(404).json({ message: "Usuario no encontrado" });
+        err.statusCode = 404;
+        err.message = "Usuario no encontrado";
       }
 
-      res.status(500).json({ message: "Error interno del servidor" });
+      next(err);
     });
 };
 
-const signin = (req, res) => {
+const signin = (req, res, next) => {
   const { email, password } = req.body;
 
-  return User.findOne({ email })
+  User.findOne({ email })
     .select("+password")
     .then((user) => {
       if (!user) {
-        return res.status(401).json({
-          message: "Correo o contraseña incorrectos",
-        });
+        const err = new Error("Correo o contraseña incorrectos");
+        err.statusCode = 401;
+        throw err;
       }
 
       return bcrypt.compare(password, user.password).then((matched) => {
         if (!matched) {
-          return res.status(401).json({
-            message: "Correo o contraseña incorrectos",
-          });
+          const err = new Error("Correo o contraseña incorrectos");
+          err.statusCode = 401;
+          throw err;
         }
 
         const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
           expiresIn: "7d",
         });
 
-        return res.json({ token });
+        res.json({ token });
       });
     })
-    .catch(() => {
-      res.status(500).json({
-        message: "Error interno del servidor",
-      });
-    });
+    .catch(next);
 };
 
-const getCurrentUser = (req, res) => {
+const getCurrentUser = (req, res, next) => {
   const { _id } = req.user;
 
   User.findById(_id)
     .orFail()
-    .then((user) => res.status(200).json(user))
+    .then((user) => {
+      res.status(200).json(user);
+    })
     .catch((err) => {
       if (err.name === "DocumentNotFoundError") {
-        return res.status(404).json({
-          message: "Usuario no encontrado",
-        });
+        err.statusCode = 404;
+        err.message = "Usuario no encontrado";
       }
 
-      res.status(500).json({
-        message: "Error interno del servidor",
-      });
+      next(err);
     });
 };
 
