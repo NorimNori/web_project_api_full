@@ -1,0 +1,92 @@
+.tooltip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 1;
+  transition: opacity 0.3s linear;
+}
+
+.tooltip__container {
+  position: relative;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 60px 36px;
+  width: 430px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+
+.tooltip__close {
+  background: url(../assets/images/close-icon.svg) no-repeat center/contain
+    transparent;
+  position: absolute;
+  cursor: pointer;
+  border: none;
+  bottom: calc(100% + 7px);
+  left: calc(100% + 8px);
+  width: 40px;
+  height: 40px;
+  transition: opacity 0.3s ease;
+}
+
+.tooltip__close:hover {
+  opacity: 0.6;
+}
+
+.tooltip__icon {
+  width: 80px;
+  height: 80px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.tooltip__icon_type_success {
+  background-image: url(../assets/images/check-mark.svg);
+}
+
+.tooltip__icon_type_error {
+  background-image: url(../assets/images/cross-mark.svg);
+}
+
+.tooltip__text {
+  font-size: 20px;
+  font-weight: 900;
+  color: #000;
+  text-align: center;
+  line-height: 1.3;
+  margin: 0;
+}
+
+@media screen and (max-width: 620px) {
+  .tooltip__container {
+    width: 282px;
+    padding: 40px 22px;
+    gap: 24px;
+  }
+
+  .tooltip__close {
+    width: 26px;
+    height: 26px;
+    bottom: calc(100% + 10px);
+    left: calc(100% - 40px);
+  }
+
+  .tooltip__icon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .tooltip__text {
+    font-size: 16px;
+  }
+}

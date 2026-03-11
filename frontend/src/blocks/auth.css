@@ -1,0 +1,105 @@
+.auth {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 65vh;
+  padding: 0 16px;
+}
+
+.auth__title {
+  font-size: 24px;
+  font-weight: 900;
+  color: #fff;
+  margin: 0 0 50px;
+  text-align: center;
+}
+
+.auth__form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 396px;
+}
+
+.auth__input {
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid #cccccc4d;
+  color: #ccc;
+  font-size: 14px;
+  padding: 10px 0;
+  margin-bottom: 30px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.auth__input::placeholder {
+  color: #ccc;
+}
+
+.auth__input:focus {
+  border-bottom-color: #fff;
+}
+
+.auth__input:last-of-type {
+  margin-bottom: 216px;
+}
+
+.auth__button {
+  background-color: #fff;
+  border: none;
+  border-radius: 4px;
+  color: #000;
+  font-size: 18px;
+  font-weight: 400;
+  height: 50px;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+  margin-bottom: 15px;
+}
+
+.auth__button:hover {
+  opacity: 0.85;
+}
+
+.auth__redirect {
+  color: #fff;
+  font-size: 14px;
+  text-align: center;
+  margin: 0;
+}
+
+.auth__link {
+  color: #fff;
+  text-decoration: underline;
+  transition: opacity 0.3s ease;
+}
+
+.auth__link:hover {
+  opacity: 0.7;
+}
+
+@media screen and (max-width: 620px) {
+  .auth__title {
+    font-size: 20px;
+    margin-bottom: 40px;
+  }
+
+  .auth__form {
+    max-width: 100%;
+  }
+
+  .auth__input:last-of-type {
+    margin-bottom: 100px;
+  }
+
+  .auth__button {
+    font-size: 16px;
+    height: 46px;
+  }
+
+  .auth__redirect {
+    font-size: 12px;
+  }
+}
