@@ -3,8 +3,15 @@ const mongoose = require("mongoose");
 
 const { PORT = 3000 } = process.env;
 
+const { errors } = require("celebrate");
 const { signin, createUser } = require("./controllers/users");
 const auth = require("./middlewares/auth");
+const {
+  celebrate,
+  Joi,
+  Segments,
+  validateURL,
+} = require("./middlewares/validation");
 
 const app = express();
 
@@ -12,8 +19,29 @@ app.use(express.json());
 
 mongoose.connect("mongodb://localhost:27017/aroundb");
 
-app.post("/signin", signin);
-app.post("/signup", createUser);
+app.post(
+  "/signin",
+  celebrate({
+    [Segments.BODY]: Joi.object().keys({
+      email: Joi.string().required().email(),
+      password: Joi.string().required(),
+    }),
+  }),
+  signin,
+);
+app.post(
+  "/signup",
+  celebrate({
+    [Segments.BODY]: Joi.object().keys({
+      name: Joi.string().min(2).max(30),
+      about: Joi.string().min(2).max(30),
+      avatar: Joi.string().custom(validateURL),
+      email: Joi.string().required().email(),
+      password: Joi.string().required().min(6),
+    }),
+  }),
+  createUser,
+);
 
 app.use(auth);
 
@@ -30,6 +58,7 @@ app.use((req, res) => {
   });
 });
 
+app.use(errors());
 app.use(errorHandler);
 
 app.listen(PORT, () => {

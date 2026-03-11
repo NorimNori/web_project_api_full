@@ -27,5 +27,6 @@
     "object-curly-newline": "off",
     "implicit-arrow-linebreak": "off",
     "function-paren-newline": "off",
+    "import/no-extraneous-dependencies": "off",
   },
 }
