@@ -12,10 +12,13 @@ const {
   Segments,
   validateURL,
 } = require("./middlewares/validation");
+const { requestLogger, errorLogger } = require("./middlewares/logger");
 
 const app = express();
 
 app.use(express.json());
+
+app.use(requestLogger);
 
 mongoose.connect("mongodb://localhost:27017/aroundb");
 
@@ -58,6 +61,7 @@ app.use((req, res) => {
   });
 });
 
+app.use(errorLogger);
 app.use(errors());
 app.use(errorHandler);
 
