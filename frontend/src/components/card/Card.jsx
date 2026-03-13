@@ -5,9 +5,11 @@ export default function Card({
   onCardLike,
   onCardDelete,
 }) {
-  const { name, link, isLiked, owner } = card;
+  const { name, link, owner, likes } = card;
 
   const isOwn = owner === currentUser._id;
+
+  const isLiked = likes.some((id) => id === currentUser._id);
 
   const cardLikeButtonClassName = `card__like-button ${
     isLiked ? "card__like-button_active" : ""

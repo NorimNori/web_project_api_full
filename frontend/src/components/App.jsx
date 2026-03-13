@@ -95,7 +95,8 @@ function App() {
 
   async function handleCardLike(card) {
     try {
-      const updatedCard = card.isLiked
+      const isLiked = card.likes.some((id) => id === currentUser._id);
+      const updatedCard = isLiked
         ? await api.removeLike(card._id)
         : await api.addLike(card._id);
 
