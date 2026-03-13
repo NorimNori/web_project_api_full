@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 
 const { PORT = 3000 } = process.env;
-
+const cors = require("cors");
 const { errors } = require("celebrate");
 const { signin, createUser } = require("./controllers/users");
 const auth = require("./middlewares/auth");
@@ -16,6 +16,7 @@ const { requestLogger, errorLogger } = require("./middlewares/logger");
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 
 app.use(requestLogger);
@@ -38,7 +39,7 @@ app.post(
     [Segments.BODY]: Joi.object().keys({
       name: Joi.string().min(2).max(30),
       about: Joi.string().min(2).max(30),
-      avatar: Joi.string().custom(validateURL),
+      avatar: Joi.string().custom(validateURL).optional(),
       email: Joi.string().required().email(),
       password: Joi.string().required().min(6),
     }),
