@@ -130,7 +130,7 @@ function App() {
         setToken(data.token);
 
         const userData = await auth.checkToken(data.token);
-        setCurrentUser(userData.data);
+        setCurrentUser(userData);
 
         setIsLoggedIn(true);
         navigate("/");
