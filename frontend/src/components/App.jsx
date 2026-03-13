@@ -17,6 +17,7 @@ function App() {
   const [cards, setCards] = useState([]);
   const [tooltip, setTooltip] = useState({ isOpen: false, isSuccess: false });
   const [isLoading, setIsLoading] = useState(true);
+  const [token, setToken] = React.useState(localStorage.getItem("jwt"));
   const navigate = useNavigate();
 
   useEffect(function () {
@@ -126,6 +127,7 @@ function App() {
       const data = await auth.authorize(email, password);
       if (data.token) {
         localStorage.setItem("jwt", data.token);
+        setToken(data.token);
 
         const userData = await auth.checkToken(data.token);
         setCurrentUser(userData.data);
